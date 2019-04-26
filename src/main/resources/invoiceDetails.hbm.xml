@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.bestkitchen.entity.InvoiceDetails" table="detallefactura">
+        <id name="detailsId" type="java.lang.Long">
+            <column name="iddetallefactura" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="invoice" class="com.bestkitchen.entity.Invoice" fetch="select">
+            <column name="idfactura" not-null="true" />
+        </many-to-one>
+        <many-to-one name="chef" class="com.bestkitchen.entity.Chef" fetch="select">
+            <column name="idcocinero" not-null="true" />
+        </many-to-one>
+        <property name="meal" type="java.lang.String">
+            <column name="plato" />
+        </property>
+        <property name="cost" type="java.lang.Double">
+            <column name="importe" />
+        </property>
+    </class>
+</hibernate-mapping>

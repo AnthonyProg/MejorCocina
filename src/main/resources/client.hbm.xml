@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.bestkitchen.entity.Client" table="cliente">
+        <id name="id" type="java.lang.Long">
+            <column name="idCliente" />
+            <generator class="increment" />
+        </id>
+        <property name="clientName" type="java.lang.String">
+            <column name="nombre" />
+        </property>
+        <property name="clientLastName" type="java.lang.String">
+            <column name="apellido1" />
+        </property>
+        <property name="clientSecondLastName" type="java.lang.String">
+            <column name="apellido2" />
+        </property>
+        <property name="clientObservations" type="java.lang.String">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

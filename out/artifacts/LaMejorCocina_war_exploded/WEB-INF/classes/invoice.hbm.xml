@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.bestkitchen.entity.Invoice" table="factura">
+        <id name="id" type="java.lang.Long">
+            <column name="idfactura" />
+            <generator class="increment" />
+        </id>
+
+        <many-to-one name="client" class="com.bestkitchen.entity.Client" fetch="select">
+            <column name="idcliente" not-null="true" />
+        </many-to-one>
+
+        <many-to-one name="waiter" class="com.bestkitchen.entity.Waiter" fetch="select">
+            <column name="idcamarero" not-null="true" />
+        </many-to-one>
+
+        <many-to-one name="table" class="com.bestkitchen.entity.Table" fetch="select">
+            <column name="idmesa" not-null="true" />
+        </many-to-one>
+
+        <property name="invoiceDate" type="java.sql.Date">
+            <column name="fechafactura" />
+        </property>
+        <set name="invoiceDetails" table="detallefactura"
+             inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idfactura" not-null="true" />
+            </key>
+            <one-to-many class="com.bestkitchen.entity.InvoiceDetails" />
+        </set>
+    </class>
+    <query name="clientsHQL">
+        <![CDATA[select invoice.client.clientName, invoice.client.clientLastName,  sum(details.cost)
+                    FROM Invoice as invoice
+                    JOIN invoice.invoiceDetails as details
+                    GROUP BY invoice.client.clientName, invoice.client.clientLastName
+                    HAVING sum(details.cost) > :minAmount
+                    ORDER BY sum(details.cost) DESC]]>
+    </query>
+
+    <query name="waiterResult">
+        <![CDATA[select invoice.waiter.name, invoice.waiter.lastName,  sum(details.cost)
+                    FROM Invoice as invoice
+                    JOIN invoice.invoiceDetails as details
+                    WHERE to_char(invoice.invoiceDate, 'MM') = :date
+                    GROUP BY invoice.waiter.name, invoice.waiter.lastName
+                    ORDER BY sum(details.cost) DESC]]>
+    </query>
+</hibernate-mapping>
